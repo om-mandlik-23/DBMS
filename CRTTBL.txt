@@ -1,0 +1,33 @@
+
+CREATE TABLE Student_36(
+    StudentID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Email VARCHAR(50),
+    Age INT,
+    Address VARCHAR(100)
+);
+
+CREATE TABLE Instructor_36(
+    InstructorID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Email VARCHAR(50),
+    Department VARCHAR(50)
+);
+
+
+CREATE TABLE Course_36(
+    CourseID INT PRIMARY KEY,
+    CourseName VARCHAR(50),
+    Credits INT,
+    InstructorID INT,
+    FOREIGN KEY (InstructorID) REFERENCES Instructor_36(InstructorID)
+);
+
+CREATE TABLE Enrollment_36(
+    EnrollmentID INT PRIMARY KEY,
+    StudentID INT,
+    CourseID INT,
+    EnrollmentDate DATE,
+    FOREIGN KEY (StudentID) REFERENCES Student_36(StudentID),
+    FOREIGN KEY (CourseID) REFERENCES Course_36(CourseID)
+);
