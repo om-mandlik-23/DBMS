@@ -1,0 +1,123 @@
+
+CREATE DATABASE StudentDB;
+USE StudentDB;
+
+CREATE TABLE Student_36(
+    StudentID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Email VARCHAR(50),
+    Age INT,
+    Address VARCHAR(100)
+);
+
+CREATE TABLE Instructor_36(
+    InstructorID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Email VARCHAR(50),
+    Department VARCHAR(50)
+);
+
+CREATE TABLE Course_36(
+    CourseID INT PRIMARY KEY,
+    CourseName VARCHAR(50),
+    Credits INT,
+    InstructorID INT,
+    FOREIGN KEY (InstructorID)
+    REFERENCES Instructor_36(InstructorID)
+);
+
+CREATE TABLE Enrollment_36(
+    EnrollmentID INT PRIMARY KEY,
+    StudentID INT,
+    CourseID INT,
+    EnrollmentDate DATE,
+    FOREIGN KEY (StudentID)
+    REFERENCES Student_36(StudentID),
+    
+    FOREIGN KEY (CourseID)
+    REFERENCES Course_36(CourseID)
+);
+
+
+INSERT INTO Instructor_36 VALUES
+(1,'Dr. Sharma','sharma@gmail.com','Computer Science'),
+(2,'Prof. Patil','patil@gmail.com','IT'),
+(3,'Dr. Mehta','mehta@gmail.com','Electronics');
+
+
+INSERT INTO Student_36 VALUES
+(1,'Rahul Sharma','rahul@gmail.com',20,'Pune'),
+(2,'Om Mandlik','om@gmail.com',21,'Junnar'),
+(3,'Yash Patil','yash@gmail.com',22,'Mumbai'),
+(4,'Riya Joshi','riya@gmail.com',20,'Nashik');
+
+INSERT INTO Course_36 VALUES
+(101,'Database Systems',4,1),
+(102,'Data Structures',3,2),
+(103,'Computer Networks',3,3);
+
+INSERT INTO Enrollment_36 VALUES
+(1,1,101,'2026-03-01'),
+(2,2,102,'2026-03-02'),
+(3,3,103,'2026-03-03'),
+(4,4,101,'2026-03-04');
+
+
+
+CREATE VIEW StudentCourseView_36 AS
+SELECT 
+    s.StudentID,
+    s.Name,
+    c.CourseName,
+    e.EnrollmentDate
+FROM Student_36 s
+JOIN Enrollment_36 e
+ON s.StudentID = e.StudentID
+JOIN Course_36 c
+ON e.CourseID = c.CourseID;
+
+SELECT * FROM StudentCourseView_36;
+
+
+
+SHOW FULL TABLES
+WHERE Table_type = 'VIEW';
+
+SHOW CREATE VIEW StudentCourseView_36;
+
+UPDATE StudentCourseView_36
+SET Name = 'Rahul S'
+WHERE StudentID = 1;
+
+SELECT * FROM Student_36;
+
+INSERT INTO StudentCourseView_36
+(StudentID, Name, CourseName, EnrollmentDate)
+VALUES
+(5,'Rohit','Database Systems','2026-03-05');
+
+DELETE FROM StudentCourseView_36
+WHERE StudentID = 4;
+
+DROP VIEW StudentCourseView_36;
+
+CREATE INDEX idx_student_name_36
+ON Student_36(Name);
+
+CREATE INDEX idx_course_name_36
+ON Course_36(CourseName);
+
+SHOW INDEX FROM Student_36;
+
+EXPLAIN
+SELECT * FROM Student_36
+WHERE Name='Rahul Sharma';
+
+EXPLAIN ANALYZE
+SELECT * FROM Student_36
+WHERE Name='Rahul Sharma';
+
+SELECT * FROM Student_36;
+SELECT * FROM Instructor_36;
+SELECT * FROM Course_36;
+SELECT * FROM Enrollment_36;
